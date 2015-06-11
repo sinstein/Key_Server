@@ -9,11 +9,15 @@ describe "Key Server", :keyserver => true do
 
   it "- can generate keys on request" do
     get "/generate"
+    key = last_response.body
+    expect(last_response.body.size).to eq(16)
   end
 
   it "- can get and block generated keys on request" do
     get "/get_key"
     key = last_response.body
+    expect(last_response.body.size).to eq(16)
+
   end
 
   it "- can unblock a blocked key on request" do
