@@ -3,7 +3,7 @@ require 'rspec'
 require 'server_test.rb'
 require 'api_test.rb'
 
-require_relative "../key_server.rb"
+require_relative "../database.rb"
 require_relative '../sinatra_server.rb'
 
 ENV['RACK_ENV'] = 'test'
