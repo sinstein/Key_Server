@@ -18,6 +18,7 @@ end
 
 get '/generate' do
   key_records.generate_key
+  return [200, "KEY GENERATED"]
 end
 
 get '/get' do 
@@ -25,7 +26,7 @@ get '/get' do
   if(!key)
     return [404, "NO KEY AVAILABLE"]
   else
-    return key
+    return [200, key]
   end
 end
 

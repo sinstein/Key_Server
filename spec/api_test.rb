@@ -24,11 +24,11 @@ RSpec.describe "Data handling of Key Server" do
 		it "- unblocks a key when requested" do
 			expect(@key_records.count_blocked_keys).to eq 5
 			expect(@key_records.count_alive_keys).to eq 10
-			#Unblocking one key
+			#Blocking one key
 			sample_key = @key_records.get_available_key
 			@key_records.unblock(sample_key)
-			#unblocking one key should reduce it from blocked list and add it to generated list
-			expect(@key_records.count_blocked_keys).to eq 5
+			#Unblocking one key should reduce it from blocked list and add it to generated list
+			expect(@key_records.count_blocked_keys).to eq 6
 			expect(@key_records.count_alive_keys).to eq 10
 		end
 	end
@@ -40,14 +40,14 @@ RSpec.describe "Data handling of Key Server" do
 			sample_key = @key_records.get_available_key
 			@key_records.unblock(sample_key)
 			@key_records.delete_key(sample_key) 
-			expect(@key_records.count_alive_keys).to eq 9
+			expect(@key_records.count_alive_keys).to eq 10
 		end
 
 		it "- deletes blocked key" do
 			expect(@key_records.count_blocked_keys).to eq 5
 			sample_key = @key_records.get_available_key
 			@key_records.delete_key(sample_key) 
-			expect(@key_records.count_blocked_keys).to eq 5
+			expect(@key_records.count_blocked_keys).to eq 6
 		end
 	end
 
@@ -77,8 +77,8 @@ RSpec.describe "Data handling of Key Server" do
 			expect(key_records.count_blocked_keys).to eq 0
   		end
 
-  		it "- auto deletes unblocked keys after time to live" do
-  			key_records = Database.new(2, 2, ':memory:')
+		it "- auto deletes unblocked keys after time to live" do
+			key_records = Database.new(2, 2, ':memory:')
 			10.times { key_records.generate_key }
 			5.times { key_records.get_available_key }
 			scheduled_delete = Rufus::Scheduler.new
@@ -87,9 +87,9 @@ RSpec.describe "Data handling of Key Server" do
 			end
 			sleep(4)
 			expect(key_records.count_alive_keys).to eq 0
-  		end
+		end
 
-  		it "- auto deletes blocked keys after time to live" do
+		it "- auto deletes blocked keys after time to live" do
   			key_records = Database.new(2, 2, ':memory:')
 			10.times { key_records.generate_key }
 			5.times { key_records.get_available_key }
@@ -99,6 +99,6 @@ RSpec.describe "Data handling of Key Server" do
       		end
 			sleep(4)
 			expect(key_records.count_blocked_keys).to eq 0
-  		end
+		end
 	end
 end

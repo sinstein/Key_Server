@@ -17,13 +17,13 @@ describe "Key Server", :keyserver => true do
   it "- can generate keys on request" do
     get "/generate"
     key = last_response.body
-    expect(last_response.body.size).to eq(22)
+    expect(last_response.body).to eq("KEY GENERATED")
   end
 
   it "- can get and block generated keys on request" do
     get "/get"
     key = last_response.body
-    expect(last_response.body.size).to eq(22)
+    expect(last_response.status).to eq 200
 
   end
   
