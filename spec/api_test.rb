@@ -9,8 +9,7 @@ RSpec.describe "Data handling of Key Server" do
 	before(:each) do
 		@key_records = Database.new(300, 60, ':memory:')
 		10.times { @key_records.generate_key }
-		5.times { @key_records.get_available_key }
-			
+		5.times { @key_records.get_available_key }	
 	end
 	
 	context "With no key deleted automatically" do
