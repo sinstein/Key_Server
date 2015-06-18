@@ -22,13 +22,18 @@ RSpec.describe "Data handling of Key Server" do
 		end
 
 		it "- unblocks a key when requested" do
+			key_records = Database.new(600, 400, ':memory:')
+			10.times { key_records.generate_key }
+			5.times { key_records.get_available_key }
+
 			expect(@key_records.count_blocked_keys).to eq 5
 			expect(@key_records.count_alive_keys).to eq 10
 			#Blocking one key
 			sample_key = @key_records.get_available_key
-			@key_records.unblock(sample_key)
-			#Unblocking one key should reduce it from blocked list and add it to generated list
 			expect(@key_records.count_blocked_keys).to eq 6
+			@key_records.unblock(sample_key)
+			#Unblocking one key should reduce it from blocked list
+			expect(@key_records.count_blocked_keys).to eq 5
 			expect(@key_records.count_alive_keys).to eq 10
 		end
 	end
@@ -40,14 +45,14 @@ RSpec.describe "Data handling of Key Server" do
 			sample_key = @key_records.get_available_key
 			@key_records.unblock(sample_key)
 			@key_records.delete_key(sample_key) 
-			expect(@key_records.count_alive_keys).to eq 10
+			expect(@key_records.count_alive_keys).to eq 9
 		end
 
 		it "- deletes blocked key" do
 			expect(@key_records.count_blocked_keys).to eq 5
 			sample_key = @key_records.get_available_key
 			@key_records.delete_key(sample_key) 
-			expect(@key_records.count_blocked_keys).to eq 6
+			expect(@key_records.count_blocked_keys).to eq 5
 		end
 	end
 

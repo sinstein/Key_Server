@@ -90,9 +90,10 @@ class Database
   end
 
   def key_exists?(key) 
-      data = @db.execute("SELECT * FROM keys WHERE key = ?", key)
-      if (data.size == 0)
-        return false
+    data = @db.execute("SELECT * FROM keys WHERE key = ?", key)
+    if (data.size == 0)
+      false
+    else
       true
     end
   end
