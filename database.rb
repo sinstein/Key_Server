@@ -30,7 +30,7 @@ class Database
   def get_available_key
     rows = @db.execute("SELECT * FROM keys WHERE block_last = ?", 0)
     if(rows.size == 0)
-      return "404 NO KEY AVAILABLE"
+      return false
     end
     key = rows[0][0]
     @db.execute("UPDATE keys SET block_last = ? WHERE key = ?",

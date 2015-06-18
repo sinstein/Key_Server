@@ -11,7 +11,7 @@ describe "Key Server", :keyserver => true do
 
   it "- throws 404 when keys are requested but not generated" do
     get "/get"
-    expect(last_response.body).to eq("404 NO KEY AVAILABLE")
+    expect(last_response.status).to eq 404
   end
 
   it "- can generate keys on request" do

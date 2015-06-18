@@ -64,42 +64,7 @@ RSpec.describe "Data handling of Key Server" do
 			expect(key_records.time_to_block).to eq 10
 		end
 	end
-=begin
-	context "Checks time-out for keys" do
-		it "- makes key unavailable for unblocking after time to block expires" do
-			key_records = Database.new(1, 2, ':memory:')
-			10.times { key_records.generate_key }
-			5.times { key_records.get_available_key }
-			sleep(3)
-			sample_key = key_records.get_available_key
-			key_records.keep_key_alive(sample_key) 
-			expect(key_records.count_blocked_keys).to eq 4
-			expect(key_records.count_alive_keys).to eq 5
-		end
 
-		it "- makes key unavailable for unblocking after time to live expires" do
-			key_records = Database.new(2, 2, ':memory:')
-			10.times { key_records.generate_key }
-			5.times { key_records.get_available_key }
-			sleep(3)
-			sample_key = key_records.db.execute("SELECT * FROM keys WHERE block_last <> ?", 0)[0][0]
-			key_records.unblock(sample_key) 
-			expect(key_records.count_blocked_keys).to eq 4
-			expect(key_records.count_alive_keys).to eq 5
-		end
-
-		it "- makes key unavailable for keep-alive after time to live expires" do
-			key_records = Database.new(2, 2, ':memory:')
-			10.times { key_records.generate_key }
-			5.times { key_records.get_available_key }
-			sleep(3)
-			sample_key = key_records.db.execute("SELECT * FROM keys WHERE block_last <> ?", 0)[0][0]
-			key_records.keep_key_alive(sample_key) 
-			expect(key_records.count_blocked_keys).to eq 5
-			expect(key_records.count_alive_keys).to eq 4
-		end
-	end
-=end
 	context "Auto cleans keys" do
 		it "- auto unblocks keys after time to block" do
 			key_records = Database.new(2, 2, ':memory:')

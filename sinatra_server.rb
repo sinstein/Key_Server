@@ -4,21 +4,29 @@ require 'rufus-scheduler'
 
 key_records = Database.new(30,10, ':memory:')
 
-#scheduled_cleanup = Rufus::Scheduler.new
-#scheduled_cleanup.every '1s' do
-#	key_records.clean_db
-#end
+if __FILE__ == $0
+  scheduled_cleanup = Rufus::Scheduler.new
+  scheduled_cleanup.every '1s' do
+    key_records.clean_db
+  end
+end
 
 
 get '/' do
   "Landing Page"
 end
+
 get '/generate' do
   key_records.generate_key
 end
 
 get '/get' do 
-  key_records.get_available_key
+  key =  key_records.get_available_key
+  if(!key)
+    return [404, "NO KEY AVAILABLE"]
+  else
+    return key
+  end
 end
 
 get '/unblock/?:key' do
